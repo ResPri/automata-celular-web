@@ -1,4 +1,3 @@
 [functions]
   directory = "netlify/functions"
-  python_version = "3.9" # Especificamos una versión de Python más estable
-  # timeout = 10 # segundos (el valor por defecto es 10 segundos, máx 26)
+    # timeout = 10 # segundos (el valor por defecto es 10 segundos, máx 26)
