@@ -238,129 +238,21 @@
         let todosLosRecords = [];
         let cantidadMostrada = 0;
         const cantidadPorPagina = 10;
-        const highscoreUrlPost = '/guardar_record'; // Asegúrate de que esta URL es correcta
-        const highscoreUrlGet = '/get_highscores';
+        
+        // --- ¡IMPORTANTE! Actualizamos las URLs para que apunten a las funciones de Netlify ---
+        // Netlify Functions se acceden a través de la ruta /.netlify/functions/nombre_de_la_funcion
+        const highscoreUrlPost = '/.netlify/functions/save_highscore'; 
+        const highscoreUrlGet = '/.netlify/functions/get_highscores';
 
         async function obtenerYMostrarRecords() {
             try {
-                // Simulación de respuesta, ya que aún no tienes un servidor real
-                const response = {
-                    ok: true,
-                    json: async () => {
-                        return {
-                            "status": "ok",
-                            "highscores": [
-                                { "nombre": "Jugador 1", "puntuacion": 10000 },
-                                { "nombre": "Jugador 2", "puntuacion": 9500 },
-                                { "nombre": "Jugador 3", "puntuacion": 9000 },
-                                { "nombre": "Jugador 4", "puntuacion": 8500 },
-                                { "nombre": "Jugador 5", "puntuacion": 8000 },
-                                { "nombre": "Jugador 6", "puntuacion": 7500 },
-                                { "nombre": "Jugador 7", "puntuacion": 7000 },
-                                { "nombre": "Jugador 8", "puntuacion": 6500 },
-                                { "nombre": "Jugador 9", "puntuacion": 6000 },
-                                { "nombre": "Jugador 10", "puntuacion": 5500 },
-                                { "nombre": "Jugador 11", "puntuacion": 5400 },
-                                { "nombre": "Jugador 12", "puntuacion": 5300 },
-                                { "nombre": "Jugador 13", "puntuacion": 5200 },
-                                { "nombre": "Jugador 14", "puntuacion": 5100 },
-                                { "nombre": "Jugador 15", "puntuacion": 5000 },
-                                { "nombre": "Jugador 16", "puntuacion": 4900 },
-                                { "nombre": "Jugador 17", "puntuacion": 4800 },
-                                 { "nombre": "Jugador 18", "puntuacion": 4700 },
-                                 { "nombre": "Jugador 19", "puntuacion": 4600 },
-                                 { "nombre": "Jugador 20", "puntuacion": 4500 },
-                                 { "nombre": "Jugador 21", "puntuacion": 4400 },
-                                 { "nombre": "Jugador 22", "puntuacion": 4300 },
-                                 { "nombre": "Jugador 23", "puntuacion": 4200 },
-                                 { "nombre": "Jugador 24", "puntuacion": 4100 },
-                                 { "nombre": "Jugador 25", "puntuacion": 4000 },
-                                 { "nombre": "Jugador 26", "puntuacion": 3900 },
-                                 { "nombre": "Jugador 27", "puntuacion": 3800 },
-                                 { "nombre": "Jugador 28", "puntuacion": 3700 },
-                                 { "nombre": "Jugador 29", "puntuacion": 3600 },
-                                 { "nombre": "Jugador 30", "puntuacion": 3500 },
-                                 { "nombre": "Jugador 31", "puntuacion": 3400 },
-                                 { "nombre": "Jugador 32", "puntuacion": 3300 },
-                                 { "nombre": "Jugador 33", "puntuacion": 3200 },
-                                 { "nombre": "Jugador 34", "puntuacion": 3100 },
-                                 { "nombre": "Jugador 35", "puntuacion": 3000 },
-                                 { "nombre": "Jugador 36", "puntuacion": 2900 },
-                                 { "nombre": "Jugador 37", "puntuacion": 2800 },
-                                 { "nombre": "Jugador 38", "puntuacion": 2700 },
-                                 { "nombre": "Jugador 39", "puntuacion": 2600 },
-                                 { "nombre": "Jugador 40", "puntuacion": 2500 },
-                                 { "nombre": "Jugador 41", "puntuacion": 2400 },
-                                 { "nombre": "Jugador 42", "puntuacion": 2300 },
-                                 { "nombre": "Jugador 43", "puntuacion": 2200 },
-                                 { "nombre": "Jugador 44", "puntuacion": 2100 },
-                                 { "nombre": "Jugador 45", "puntuacion": 2000 },
-                                 { "nombre": "Jugador 46", "puntuacion": 1900 },
-                                 { "nombre": "Jugador 47", "puntuacion": 1800 },
-                                 { "nombre": "Jugador 48", "puntuacion": 1700 },
-                                 { "nombre": "Jugador 49", "puntuacion": 1600 },
-                                 { "nombre": "Jugador 50", "puntuacion": 1500 },
-                                 { "nombre": "Jugador 51", "puntuacion": 1400 },
-                                 { "nombre": "Jugador 52", "puntuacion": 1300 },
-                                 { "nombre": "Jugador 53", "puntuacion": 1200 },
-                                 { "nombre": "Jugador 54", "puntuacion": 1100 },
-                                 { "nombre": "Jugador 55", "puntuacion": 1000 },
-                                 { "nombre": "Jugador 56", "puntuacion": 900 },
-                                 { "nombre": "Jugador 57", "puntuacion": 800 },
-                                 { "nombre": "Jugador 58", "puntuacion": 700 },
-                                 { "nombre": "Jugador 59", "puntuacion": 600 },
-                                 { "nombre": "Jugador 60", "puntuacion": 500 },
-                                 { "nombre": "Jugador 61", "puntuacion": 400 },
-                                 { "nombre": "Jugador 62", "puntuacion": 300 },
-                                 { "nombre": "Jugador 63", "nombre": "Jugador 63", "puntuacion": 200 },
-                                 { "nombre": "Jugador 64", "puntuacion": 100 },
-                                 { "nombre": "Jugador 65", "puntuacion": 99 },
-                                 { "nombre": "Jugador 66", "puntuacion": 98 },
-                                 { "nombre": "Jugador 67", "puntuacion": 97 },
-                                 { "nombre": "Jugador 68", "puntuacion": 96 },
-                                 { "nombre": "Jugador 69", "puntuacion": 95 },
-                                 { "nombre": "Jugador 70", "puntuacion": 94 },
-                                 { "nombre": "Jugador 71", "puntuacion": 93 },
-                                 { "nombre": "Jugador 72", "puntuacion": 92 },
-                                 { "nombre": "Jugador 73", "puntuacion": 91 },
-                                 { "nombre": "Jugador 74", "puntuacion": 90 },
-                                 { "nombre": "Jugador 75", "puntuacion": 89 },
-                                 { "nombre": "Jugador 76", "puntuacion": 88 },
-                                 { "nombre": "Jugador 77", "puntuacion": 87 },
-                                 { "nombre": "Jugador 78", "puntuacion": 86 },
-                                 { "nombre": "Jugador 79", "puntuacion": 85 },
-                                 { "nombre": "Jugador 80", "puntuacion": 84 },
-                                 { "nombre": "Jugador 81", "puntuacion": 83 },
-                                 { "nombre": "Jugador 82", "puntuacion": 82 },
-                                 { "nombre": "Jugador 83", "puntuacion": 81 },
-                                 { "nombre": "Jugador 84", "puntuacion": 80 },
-                                 { "nombre": "Jugador 85", "puntuacion": 79 },
-                                 { "nombre": "Jugador 86", "puntuacion": 78 },
-                                 { "nombre": "Jugador 87", "puntuacion": 77 },
-                                 { "nombre": "Jugador 88", "puntuacion": 76 },
-                                 { "nombre": "Jugador 89", "puntuacion": 75 },
-                                 { "nombre": "Jugador 90", "puntuacion": 74 },
-                                 { "nombre": "Jugador 91", "puntuacion": 73 },
-                                 { "nombre": "Jugador 92", "puntuacion": 72 },
-                                 { "nombre": "Jugador 93", "puntuacion": 71 },
-                                 { "nombre": "Jugador 94", "puntuacion": 70 },
-                                 { "nombre": "Jugador 95", "puntuacion": 69 },
-                                 { "nombre": "Jugador 96", "puntuacion": 68 },
-                                 { "nombre": "Jugador 97", "puntuacion": 67 },
-                                 { "nombre": "Jugador 98", "puntuacion": 66 },
-                                 { "nombre": "Jugador 99", "puntuacion": 65 },
-                                 { "nombre": "Jugador 100", "puntuacion": 64 }
-                            ]
-                        }
-                    }
-                }
-
-
+                // --- ¡IMPORTANTE! Reemplazamos la simulación con una llamada real a la función de Netlify ---
+                const response = await fetch(highscoreUrlGet); 
+                
                 if (!response.ok) {
                     throw new Error(`Error al obtener los récords: ${response.status}`);
                 }
                 const data = await response.json();
-
 
                 if (data.status === "ok") {
                     todosLosRecords = data.highscores;
@@ -386,8 +278,9 @@
             const siguientesRecords = todosLosRecords.slice(cantidadMostrada, cantidadMostrada + cantidadPorPagina);
 
             siguientesRecords.forEach(record => {
+                // CORRECCIÓN: Usar 'name' y 'score' según la respuesta de la función de Netlify
                 const nuevoItem = document.createElement('li');
-                nuevoItem.textContent = `${record.nombre} - ${record.puntuacion}`;
+                nuevoItem.textContent = `${record.name} - ${record.score}`;
                 listaRecordsElement.appendChild(nuevoItem);
             });
             cantidadMostrada += cantidadPorPagina;
@@ -409,8 +302,9 @@
 
         function enviarRecord(nombre, puntuacion) {
             const data = {
-                nombre: nombre,
-                puntuacion: puntuacion
+                // CORRECCIÓN: Asegurarse de que el nombre del campo coincida con el backend
+                name: nombre, 
+                score: puntuacion // CORRECCIÓN: Asegurarse de que el nombre del campo coincida con el backend
             };
             fetch(highscoreUrlPost, {
                 method: 'POST',
@@ -499,7 +393,6 @@
     </script>
 </body>
 </html>
-
 
 
 
