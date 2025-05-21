@@ -1,4 +1,5 @@
 [build]
+  command = "pip install -r netlify/functions/requirements.txt" # Comando de construcción explícito
   environment = { PYTHON_VERSION = "3.9" } # Forzamos la versión de Python 3.9 para el entorno de construcción
 
 [functions]
