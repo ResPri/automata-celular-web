@@ -1,3 +1,6 @@
+[build]
+  environment = { PYTHON_VERSION = "3.9" } # Forzamos la versión de Python 3.9 para el entorno de construcción
+
 [functions]
   directory = "netlify/functions"
-    # timeout = 10 # segundos (el valor por defecto es 10 segundos, máx 26)
+  # timeout = 10 # segundos (el valor por defecto es 10 segundos, máx 26)
