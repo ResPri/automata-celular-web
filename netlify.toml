@@ -4,8 +4,4 @@
 
 [functions]
   directory = "netlify/functions"
-  # timeout = 10 # segundos (el valor por defecto es 10 segundos, máx 26)
-
-  # Configuración específica para funciones Python
-  [functions.python]
-    zip_artifacts = false # Descomentado: Le dice a Netlify que no use un "zip" para el empaquetado.
+  node_bundler = "none" # Asegura que no se use un bundler de Node.js para las funciones Python
