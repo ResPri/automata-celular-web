@@ -8,8 +8,4 @@
 
   # Configuración específica para funciones Python
   [functions.python]
-    # Esto le dice a Netlify que no use un "zip" para el empaquetado si hay problemas,
-    # aunque normalmente no es necesario. Lo añadimos por si acaso.
-    # Es más común para funciones con dependencias complejas o binarios.
-    # Si sigue sin funcionar, podríamos probar a eliminar esta línea.
-    # zip_artifacts = false
+    zip_artifacts = false # Descomentado: Le dice a Netlify que no use un "zip" para el empaquetado.
