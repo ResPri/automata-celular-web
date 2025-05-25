@@ -1,0 +1,9 @@
+{
+  "name": "get-highscores",
+  "version": "1.0.0",
+  "description": "Netlify function to get highscores from Firebase",
+  "main": "get-highscores.js",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}

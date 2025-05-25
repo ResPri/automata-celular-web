@@ -1,0 +1,9 @@
+{
+  "name": "save-highscore",
+  "version": "1.0.0",
+  "description": "Netlify function to save highscores to Firebase",
+  "main": "save-highscore.js",
+  "dependencies": {
+    "firebase-admin": "^12.0.0"
+  }
+}
