@@ -3,4 +3,6 @@
 
 [functions]
   directory = "netlify/functions"
-  # Eliminar la línea: node_bundler = "none"
+
+[[plugins]]
+package = "@netlify/plugin-functions-install-core"
