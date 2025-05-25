@@ -1,7 +1,6 @@
 [build]
-  # Ya no necesitamos un build.command para Python
-  # environment = { PYTHON_VERSION = "3.9" } # Eliminar esta línea
+  # Sin comandos de build globales para la instalación de dependencias.
 
 [functions]
   directory = "netlify/functions"
-  node_bundler = "none" # Mantenemos esto si quieres que Netlify no use esbuild, aunque con Node.js suele ser menos problemático. Podríamos incluso probar a quitarlo si esto falla.
+  # Eliminar la línea: node_bundler = "none"
