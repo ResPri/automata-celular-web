@@ -1,76 +1,54 @@
-// netlify/functions/get-highscores/get-highscores.js
-
 const admin = require('firebase-admin');
 
-// Inicializa Firebase Admin SDK si no ha sido inicializado
-// Las credenciales se obtendrán de las variables de entorno de Netlify.
-// Es crucial que la variable de entorno 'FIREBASE_CONFIG' contenga el JSON
-// de tu clave de servicio como una cadena de texto (como ya lo tienes).
 if (!admin.apps.length) {
     try {
-        const credJson = process.env.FIREBASE_CONFIG;
-        if (credJson) {
-            const serviceAccount = JSON.parse(credJson);
-            admin.initializeApp({
-                credential: admin.credential.cert(serviceAccount)
-            });
-        } else {
-            console.error("Error: FIREBASE_CONFIG environment variable not set.");
-            // En un entorno de desarrollo local, podrías cargar un archivo de credenciales:
-            // const serviceAccount = require("../../path/to/your/serviceAccountKey.json");
-            // admin.initializeApp({ credential: admin.credential.cert(serviceAccount) });
-        }
+        // Se asume que FIREBASE_CONFIG es una cadena JSON
+        const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG);
+
+        admin.initializeApp({
+            credential: admin.credential.cert(firebaseConfig)
+        });
+        console.log('Firebase Admin SDK inicializado correctamente.');
     } catch (e) {
-        console.error(`Error initializing Firebase: ${e.message}`);
+        console.error('Error al inicializar Firebase Admin SDK:', e.message);
+        // Si hay un error, lanzamos una excepción para que el fallo sea visible en los logs de Netlify
+        throw new Error('Falló la inicialización de Firebase Admin SDK: ' + e.message);
     }
 }
 
 const db = admin.firestore();
 
 exports.handler = async (event, context) => {
-    // Asegura que solo se procesen peticiones GET
-    if (event.httpMethod !== 'GET') {
-        return {
-            statusCode: 405,
-            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-            body: JSON.stringify({ status: "error", message: "Método no permitido. Solo GET." })
-        };
-    }
-
     try {
         const highscoresRef = db.collection('highscores');
-
-        const querySnapshot = await highscoresRef.orderBy('score', 'desc').limit(100).get();
+        const snapshot = await highscoresRef.orderBy('score', 'desc').limit(10).get();
 
         const highscores = [];
-        querySnapshot.forEach(doc => {
-            const scoreData = doc.data();
-            highscores.push({
-                name: scoreData.name || "Anónimo",
-                score: scoreData.score || 0
-            });
+        snapshot.forEach(doc => {
+            highscores.push(doc.data());
         });
 
         return {
             statusCode: 200,
             headers: {
                 "Content-Type": "application/json",
-                "Access-Control-Allow-Origin": "*" // Habilita CORS
+                "Access-Control-Allow-Origin": "*", // Esto es importante para CORS en desarrollo
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
             },
-            body: JSON.stringify({
-                status: "ok",
-                highscores: highscores
-            })
+            body: JSON.stringify({ status: "ok", highscores: highscores })
         };
     } catch (error) {
-        console.error(`Error fetching highscores: ${error.message}`);
+        console.error('Error al obtener las puntuaciones altas:', error.message);
         return {
             statusCode: 500,
-            headers: { "Content-Type": "application/json", "Access-Control-Allow-Origin": "*" },
-            body: JSON.stringify({
-                status: "error",
-                message: `Error interno del servidor: ${error.message}`
-            })
+            headers: {
+                "Content-Type": "application/json",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+                "Access-Control-Allow-Headers": "Content-Type"
+            },
+            body: JSON.stringify({ status: "error", message: "Error interno del servidor: " + error.message })
         };
     }
 };
