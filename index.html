@@ -149,7 +149,7 @@
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 3.0</h1>
+        <h1>Autómata Celular3.2</h1>
         <nav>
             <a href="index.html">Jugar</a>
             <a href="contacto.html">Contacto</a>
@@ -170,7 +170,9 @@
                     <li>Cargando récords...</li>
                 </ul>
                 <div class="highscores-controls">
-                    </div>
+                    <button id="cargarMasButton">Cargar más</button>
+                    <button id="plegarListaButton">Plegar lista</button>
+                </div>
             </div>
         </div>
     </main>
@@ -184,12 +186,7 @@
 
     <script src="Juego Godot/godot.js"></script>
 
-    <script type="module">
-        // Importa la clase Engine de Godot si es necesario o asegúrate de que esté en el ámbito global
-        // Si godot.js ya define 'Engine' globalmente, no necesitas importarlo con 'type="module"'
-        // Si tu setup de godot.js no exporta Engine, esto podría dar un error.
-        // Si es el caso, simplemente quita 'type="module"' del script tag y la línea de import.
-
+    <script>
         // URLs de tus Netlify Functions
         const GET_HIGHSCORES_URL = 'https://neon-granita-f29eda.netlify.app/.netlify/functions/get-highscores';
         const SAVE_HIGHSCORE_URL = 'https://neon-granita-f29eda.netlify.app/.netlify/functions/save-highscore';
@@ -213,7 +210,9 @@
             highscores.forEach((record, index) => {
                 const listItem = document.createElement('li');
                 // Formatear el nombre y la puntuación
-                listItem.textContent = `${index + 1}. ${record.name}: ${record.score}`;
+                // Asegúrate de que 'score' es un número antes de usar toLocaleString para evitar errores.
+                const scoreFormatted = typeof record.score === 'number' ? record.score.toLocaleString() : record.score;
+                listItem.textContent = `${index + 1}. ${record.name}: ${scoreFormatted}`;
                 highscoresList.appendChild(listItem);
             });
         }
@@ -260,7 +259,6 @@
                     return false; // Indicar a Godot que hubo un error
                 }
             } catch (error) {
-                    // Si el error es una excepción de red (ej. CORS bloqueado en desarrollo local sin proxy)
                 console.error('Error de red o del servidor al guardar récord:', error);
                 return false; // Indicar a Godot que hubo un error
             }
@@ -270,10 +268,8 @@
         // --- Lógica de inicialización del juego Godot y los récords ---
         window.onload = function() {
             const canvas = document.getElementById('godot-canvas');
-            // Los botones de cargar más y plegar no son necesarios si solo muestra el top 10
-            // y el Godot no los controla. Si los necesitas para algo, adaptaría esto.
-            // const cargarMasButton = document.getElementById('cargarMasButton');
-            // const plegarListaButton = document.getElementById('plegarListaButton');
+            const cargarMasButton = document.getElementById('cargarMasButton'); // Mantener si Godot controla esto
+            const plegarListaButton = document.getElementById('plegarListaButton'); // Mantener si Godot controla esto
 
             const GODOT_CONFIG = {
                 canvas: canvas,
@@ -304,16 +300,19 @@
             });
 
             // Inicialización de los récords reales
-            fetchHighscores(); // Llamar a la función que obtiene los récords de Netlify Functions
-            
-            // Los botones de cargar más/plegar no son necesarios si solo muestra el top 10
-            // y el Godot no los controla. Si los necesitas para algo, adaptaría esto.
-            // cargarMasButton.addEventListener('click', mostrarSiguientesRecords); // Esto era de la simulación
-            // plegarListaButton.addEventListener('click', plegarListaRecords); // Esto era de la simulación
+            fetchHighscores(); // Llama a la función que obtiene los récords de Netlify Functions
+
+            // Asegúrate de que estos listeners aún son necesarios. Si Godot controla estos botones
+            // o si ya no quieres la funcionalidad de "cargar más" en el frontend, puedes eliminarlos.
+            // Para el top 10, no son estrictamente necesarios en el frontend puro.
+            // Si los mantienes, la lógica de esos botones deberá ser re-implementada o eliminada si no se usa.
+            if (cargarMasButton) {
+                cargarMasButton.addEventListener('click', () => console.log('Botón "Cargar más" clickeado. Implementa la lógica si es necesario.'));
+            }
+            if (plegarListaButton) {
+                plegarListaButton.addEventListener('click', () => console.log('Botón "Plegar lista" clickeado. Implementa la lógica si es necesario.'));
+            }
         };
     </script>
 </body>
 </html>
-
-
-
