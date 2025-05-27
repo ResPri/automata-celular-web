@@ -21,7 +21,7 @@ const db = admin.firestore();
 exports.handler = async (event, context) => {
     try {
         const highscoresRef = db.collection('highscores');
-        const snapshot = await highscoresRef.orderBy('score', 'desc').limit(10).get();
+        const snapshot = await highscoresRef.orderBy('score', 'desc').limit(100).get();
 
         const highscores = [];
         snapshot.forEach(doc => {
