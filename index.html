@@ -57,6 +57,7 @@
             
             /* ¡IMPORTANT! Esta relación (16/9) debe coincidir con la de tu juego en Godot (1152x648 es 16:9) */
             aspect-ratio: 16 / 9; 
+            position: relative; /* Necesario para que la pantalla de carga se posicione absolutamente dentro */
         }
 
         /* El selector CSS ahora apunta al ID correcto del canvas */
@@ -181,11 +182,63 @@
             height: 100%;
             border: 0;
         }
+
+        /* Estilos para la pantalla de carga */
+        #loading-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9); /* Fondo oscuro semitransparente */
+            display: flex;
+            justify-content: center; /* Centra el contenido horizontalmente (eje principal) */
+            align-items: center;   /* Centra el contenido verticalmente (eje transversal) */
+            z-index: 9999; /* Asegura que esté por encima de todo */
+            color: white;
+            /* Se ha eliminado flex-direction: column de aquí porque .loading-content lo manejará */
+        }
+
+        .loading-content {
+            display: flex; /* CAMBIO: Ahora .loading-content es un contenedor flex */
+            flex-direction: column; /* CAMBIO: Apila sus hijos (párrafo y spinner) verticalmente */
+            justify-content: center; /* CAMBIO: Centra verticalmente el contenido dentro de sí mismo */
+            align-items: center;   /* CAMBIO: Centra horizontalmente el contenido dentro de sí mismo */
+            text-align: center; /* Mantenido como respaldo para el texto */
+            margin: 0; /* Asegura que no haya márgenes externos en .loading-content */
+            padding: 0; /* Asegura que no haya padding externo en .loading-content */
+        }
+
+        .loading-content p { /* AÑADIDO: Elimina los márgenes por defecto del párrafo para un centrado preciso */
+            margin: 0;
+        }
+
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite; /* Animación de giro */
+            margin-top: 20px; /* Mantiene un margen superior para separar del texto "Cargando juego..." */
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Oculta la pantalla de carga cuando no es necesaria */
+        #loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 1s, visibility 1s; /* Transición suave al desaparecer */
+        }
     </style>
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 4.2</h1>
+        <h1>Autómata Celular 4.3</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
@@ -194,6 +247,12 @@
         </div>
         
         <div id="juego-container">
+            <div id="loading-screen">
+                <div class="loading-content">
+                    <p>Cargando juego...</p>
+                    <div class="spinner"></div>
+                </div>
+            </div>
             <canvas id="canvas"></canvas>
         </div>
 
@@ -229,6 +288,15 @@
         <p>Tecnología: Godot Engine</p>
         <p><a href="contacto.html">Contacto</a> | <a href="politica-privacidad.html">Política de Privacidad</a> | <a href="terminos-uso.html">Términos de Uso</a></p>
         </footer>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loading-screen');
+            // Se muestra la pantalla de carga durante 5 segundos
+            setTimeout(() => {
+                loadingScreen.classList.add('hidden'); // Añade la clase 'hidden' para ocultarla
+            }, 5000); // 5000 milisegundos = 5 segundos
+        });
+    </script>
     <script src="Juego Godot/automatacelular.js"></script>
     <script>
 // --- Código para obtener y mostrar los récords ---
@@ -246,7 +314,6 @@
 
         async function obtenerYMostrarRecords() {
             try {
-                // --- ¡IMPORTANTE! Reemplazamos la simulación con una llamada real a la función de Netlify ---
                 const response = await fetch(highscoreUrlGet); 
                 
                 if (!response.ok) {
@@ -255,7 +322,6 @@
                 const data = await response.json();
 
                 if (data.status === "ok") {
-                    // Si el backend devuelve un array de 'highscores', úsalo directamente
                     todosLosRecords = data.highscores; 
                     cantidadMostrada = 0;
                     listaRecordsElement.innerHTML = ''; // Limpia la lista
@@ -263,7 +329,6 @@
 
                 } else {
                     console.error("Error del servidor:", data.message);
-                    // Muestra un mensaje de error en la página
                     listaRecordsElement.innerHTML = `<li>Error al obtener los récords: ${data.message}</li>`;
                     if (cargarMasButton) cargarMasButton.style.display = 'none'; // Ocultar si hay error
 
@@ -276,11 +341,9 @@
         }
 
         function mostrarSiguientesRecords() {
-            // Muestra los récords basándose en `todosLosRecords` obtenidos del backend
             const inicio = cantidadMostrada;
             const fin = Math.min(cantidadMostrada + cantidadPorPagina, todosLosRecords.length);
             
-            // Limpia solo si es la primera carga o se está "plegando"
             if (inicio === 0) {
                  listaRecordsElement.innerHTML = ''; 
             }
@@ -288,13 +351,11 @@
             for (let i = inicio; i < fin; i++) {
                 const record = todosLosRecords[i];
                 const nuevoItem = document.createElement('li');
-                // Asegúrate de que el nombre de las propiedades coincida con lo que devuelve tu función de Netlify (name, score)
                 nuevoItem.textContent = `${record.name} - ${record.score}`;
                 listaRecordsElement.appendChild(nuevoItem);
             }
             cantidadMostrada = fin; // Actualiza la cantidad de récords mostrados
 
-            // Actualiza el estado de los botones
             if (cargarMasButton) {
                 cargarMasButton.disabled = (cantidadMostrada >= todosLosRecords.length);
                 cargarMasButton.style.display = (cantidadMostrada < todosLosRecords.length) ? 'inline-block' : 'none';
@@ -315,7 +376,6 @@
         // Esta función será llamada desde Godot para enviar un nuevo récord
         window.enviarRecord = async (nombre, puntuacion) => {
             const data = {
-                // Asegúrate de que los nombres de los campos coincidan con lo que tu función Netlify espera (name, score)
                 name: nombre, 
                 score: puntuacion 
             };
@@ -335,7 +395,6 @@
 
                 if (responseData.status === 'ok') {
                     console.log('Récord guardado exitosamente');
-                    // Una vez guardado, volvemos a cargar la lista completa para actualizarla
                     await obtenerYMostrarRecords(); 
                     return true; // Indica a Godot que fue exitoso
                 } else {
@@ -410,7 +469,4 @@
     </script>
 </body>
 </html>
-
-
-
 
