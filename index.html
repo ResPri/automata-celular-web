@@ -238,7 +238,7 @@
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 4.3</h1>
+        <h1>Autómata Celular 5.0</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
@@ -287,7 +287,26 @@
         <p>Desarrollado por Respi con la ayuda de Gemini AI.</p>
         <p>Tecnología: Godot Engine</p>
         <p><a href="contacto.html">Contacto</a> | <a href="politica-privacidad.html">Política de Privacidad</a> | <a href="terminos-uso.html">Términos de Uso</a></p>
-        </footer>
+    </footer>
+
+    <input type="text" id="mobileNameInput" placeholder="Introduce tu nombre aquí..." style="
+        position: absolute;
+        z-index: 10;
+        display: none; /* Oculto por defecto */
+        width: 250px; /* Ajusta el ancho para que sea cómodo en móvil */
+        padding: 12px;
+        font-size: 1.2em;
+        border: 3px solid #0575ff;
+        border-radius: 8px;
+        background-color: #f8f8f8; /* Color de fondo claro */
+        color: #333; /* Color de texto oscuro */
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para que destaque */
+    ">
+
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const loadingScreen = document.getElementById('loading-screen');
@@ -466,6 +485,38 @@
                 plegarListaButton.addEventListener('click', plegarListaRecords);
             }
         };
+        // FUNCIONES JAVASCRIPT PARA EL CAMPO DE TEXTO DE MÓVILES (INICIO)
+
+        // Función para mostrar el campo de texto HTML
+        window.showMobileInput = function() {
+            const mobileInput = document.getElementById('mobileNameInput'); // Busca el campo por su ID
+            if (mobileInput) { // Si lo encuentra...
+                mobileInput.value = ''; // Limpia cualquier texto anterior
+                mobileInput.style.display = 'block'; // Lo hace visible
+                mobileInput.focus(); // Le da el foco para que el teclado virtual se abra
+            }
+        }
+
+        // Función para ocultar el campo de texto HTML
+        window.hideMobileInput = function() {
+            const mobileInput = document.getElementById('mobileNameInput');
+            if (mobileInput) {
+                mobileInput.style.display = 'none'; // Lo oculta
+                mobileInput.value = ''; // Limpia el texto al ocultarlo
+            }
+        }
+
+        // Función para obtener el valor del campo de texto HTML
+        window.getMobileInputValue = function() {
+            const mobileInput = document.getElementById('mobileNameInput');
+            if (mobileInput) {
+                return mobileInput.value; // Devuelve lo que el usuario ha escrito
+            }
+            return ""; // Si el campo no se encuentra, devuelve una cadena vacía para evitar errores
+        }
+
+        // FUNCIONES JAVASCRIPT PARA EL CAMPO DE TEXTO DE MÓVILES (FIN)
+
     </script>
 </body>
 </html>
