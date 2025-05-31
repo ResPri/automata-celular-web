@@ -238,7 +238,7 @@
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 5.7</h1>
+        <h1>Autómata Celular</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
@@ -306,218 +306,243 @@
         text-align: center;
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para que destaque */
     ">
+        <div id="debugInfo" style="margin-top: 20px; padding: 10px; background-color: #eee; border: 1px solid #ccc; text-align: center; color: black;">
+            Esperando info de depuración...
+        </div>
+        <input type="text" id="mobileNameInput" style="position: absolute; z-index: 10; ...">
 
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const loadingScreen = document.getElementById('loading-screen');
-            // Se muestra la pantalla de carga durante 5 segundos
-            setTimeout(() => {
-                loadingScreen.classList.add('hidden'); // Añade la clase 'hidden' para ocultarla
-            }, 5000); // 5000 milisegundos = 5 segundos
-        });
-    </script>
-    <script src="Juego Godot/automatacelular.js"></script>
-    <script>
-// --- Código para obtener y mostrar los récords ---
-        const listaRecordsElement = document.querySelector("#tabla-records ol");
-        const cargarMasButton = document.querySelector("#cargar-mas");
-        const plegarListaButton = document.querySelector("#plegar-lista");
-        let todosLosRecords = [];
-        let cantidadMostrada = 0;
-        const cantidadPorPagina = 10;
-        
-        // --- ¡IMPORTANTE! Actualizamos las URLs para que apunten a las funciones de Netlify ---
-        // Netlify Functions se acceden a través de la ruta /.netlify/functions/nombre_de_la_funcion
-        const highscoreUrlPost = '/.netlify/functions/save-highscore'; // Nombre de tu función para guardar
-        const highscoreUrlGet = '/.netlify/functions/get-highscores'; // Nombre de tu función para obtener
+<script src="Juego Godot/automatacelular.js"></script>
+<script>
+    // --- INICIO DE TODO EL CÓDIGO JAVASCRIPT PERSONALIZADO UNIFICADO ---
 
-        async function obtenerYMostrarRecords() {
-            try {
-                const response = await fetch(highscoreUrlGet); 
-                
-                if (!response.ok) {
-                    throw new Error(`Error al obtener los récords: ${response.status}`);
-                }
-                const data = await response.json();
+    // Lógica de la pantalla de carga (movida del primer script)
+    document.addEventListener('DOMContentLoaded', () => {
+        const loadingScreen = document.getElementById('loading-screen');
+        // Se muestra la pantalla de carga durante 5 segundos
+        setTimeout(() => {
+            loadingScreen.classList.add('hidden'); // Añade la clase 'hidden' para ocultarla
+        }, 5000); // 5000 milisegundos = 5 segundos
+    });
 
-                if (data.status === "ok") {
-                    todosLosRecords = data.highscores; 
-                    cantidadMostrada = 0;
-                    listaRecordsElement.innerHTML = ''; // Limpia la lista
-                    mostrarSiguientesRecords(); // Llama a esta función para mostrar los récords obtenidos
+    // --- Código para obtener y mostrar los récords ---
+    const listaRecordsElement = document.querySelector("#tabla-records ol");
+    const cargarMasButton = document.querySelector("#cargar-mas");
+    const plegarListaButton = document.querySelector("#plegar-lista");
+    let todosLosRecords = [];
+    let cantidadMostrada = 0;
+    const cantidadPorPagina = 10;
 
-                } else {
-                    console.error("Error del servidor:", data.message);
-                    listaRecordsElement.innerHTML = `<li>Error al obtener los récords: ${data.message}</li>`;
-                    if (cargarMasButton) cargarMasButton.style.display = 'none'; // Ocultar si hay error
+    // --- ¡IMPORTANTE! Actualizamos las URLs para que apunten a las funciones de Netlify ---
+    const highscoreUrlPost = '/.netlify/functions/save-highscore'; // Nombre de tu función para guardar
+    const highscoreUrlGet = '/.netlify/functions/get-highscores'; // Nombre de tu función para obtener
 
-                }
-            } catch (error) {
-                console.error("Error de red o de parseo:", error);
-                listaRecordsElement.innerHTML = `<li>Error al obtener los récords: ${error.message}</li>`;
+    async function obtenerYMostrarRecords() {
+        try {
+            const response = await fetch(highscoreUrlGet); 
+
+            if (!response.ok) {
+                throw new Error(`Error al obtener los récords: ${response.status}`);
+            }
+            const data = await response.json();
+
+            if (data.status === "ok") {
+                todosLosRecords = data.highscores; 
+                cantidadMostrada = 0;
+                listaRecordsElement.innerHTML = ''; // Limpia la lista
+                mostrarSiguientesRecords(); // Llama a esta función para mostrar los récords obtenidos
+
+            } else {
+                console.error("Error del servidor:", data.message);
+                listaRecordsElement.innerHTML = `<li>Error al obtener los récords: ${data.message}</li>`;
                 if (cargarMasButton) cargarMasButton.style.display = 'none'; // Ocultar si hay error
+
             }
+        } catch (error) {
+            console.error("Error de red o de parseo:", error);
+            listaRecordsElement.innerHTML = `<li>Error al obtener los récords: ${error.message}</li>`;
+            if (cargarMasButton) cargarMasButton.style.display = 'none'; // Ocultar si hay error
+        }
+    }
+
+    function mostrarSiguientesRecords() {
+        const inicio = cantidadMostrada;
+        const fin = Math.min(cantidadMostrada + cantidadPorPagina, todosLosRecords.length);
+
+        if (inicio === 0) {
+             listaRecordsElement.innerHTML = ''; 
         }
 
-        function mostrarSiguientesRecords() {
-            const inicio = cantidadMostrada;
-            const fin = Math.min(cantidadMostrada + cantidadPorPagina, todosLosRecords.length);
-            
-            if (inicio === 0) {
-                 listaRecordsElement.innerHTML = ''; 
-            }
-
-            for (let i = inicio; i < fin; i++) {
-                const record = todosLosRecords[i];
-                const nuevoItem = document.createElement('li');
-                nuevoItem.textContent = `${record.name} - ${record.score}`;
-                listaRecordsElement.appendChild(nuevoItem);
-            }
-            cantidadMostrada = fin; // Actualiza la cantidad de récords mostrados
-
-            if (cargarMasButton) {
-                cargarMasButton.disabled = (cantidadMostrada >= todosLosRecords.length);
-                cargarMasButton.style.display = (cantidadMostrada < todosLosRecords.length) ? 'inline-block' : 'none';
-            }
-            if (plegarListaButton) {
-                plegarListaButton.style.display = (cantidadMostrada > cantidadPorPagina) ? 'inline-block' : 'none';
-            }
+        for (let i = inicio; i < fin; i++) {
+            const record = todosLosRecords[i];
+            const nuevoItem = document.createElement('li');
+            nuevoItem.textContent = `${record.name} - ${record.score}`;
+            listaRecordsElement.appendChild(nuevoItem);
         }
+        cantidadMostrada = fin; // Actualiza la cantidad de récords mostrados
 
-        function plegarListaRecords() {
-            cantidadMostrada = 0; // Reinicia para mostrar desde el principio
-            listaRecordsElement.innerHTML = ''; // Limpia toda la lista
-            mostrarSiguientesRecords(); // Vuelve a cargar solo la primera "página"
-            if (plegarListaButton) plegarListaButton.style.display = 'none';
-            if (cargarMasButton) cargarMasButton.style.display = 'inline-block'; // Asegurarse de que "Cargar más" se muestre si hay más récords
+        if (cargarMasButton) {
+            cargarMasButton.disabled = (cantidadMostrada >= todosLosRecords.length);
+            cargarMasButton.style.display = (cantidadMostrada < todosLosRecords.length) ? 'inline-block' : 'none';
         }
+        if (plegarListaButton) {
+            plegarListaButton.style.display = (cantidadMostrada > cantidadPorPagina) ? 'inline-block' : 'none';
+        }
+    }
 
-        // Esta función será llamada desde Godot para enviar un nuevo récord
-        window.enviarRecord = async (nombre, puntuacion) => {
-            const data = {
-                name: nombre, 
-                score: puntuacion 
-            };
-            try {
-                const response = await fetch(highscoreUrlPost, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                if (!response.ok) {
-                    throw new Error(`Error al enviar el récord: ${response.status}`);
-                }
-                const responseData = await response.json();
+    function plegarListaRecords() {
+        cantidadMostrada = 0; // Reinicia para mostrar desde el principio
+        listaRecordsElement.innerHTML = ''; // Limpia toda la lista
+        mostrarSiguientesRecords(); // Vuelve a cargar solo la primera "página"
+        if (plegarListaButton) plegarListaButton.style.display = 'none';
+        if (cargarMasButton) cargarMasButton.style.display = 'inline-block'; // Asegurarse de que "Cargar más" se muestre si hay más récords
+    }
 
-                if (responseData.status === 'ok') {
-                    console.log('Récord guardado exitosamente');
-                    await obtenerYMostrarRecords(); 
-                    return true; // Indica a Godot que fue exitoso
-                } else {
-                    console.error('Error al guardar el récord:', responseData.message);
-                    return false; // Indica a Godot que hubo un error
-                }
-            } catch (error) {
-                console.error('Error de red o del servidor al enviar récord:', error);
-                return false; // Indica a Godot que hubo un error
-            }
+    // Esta función será llamada desde Godot para enviar un nuevo récord
+    window.enviarRecord = async (nombre, puntuacion) => {
+        const data = {
+            name: nombre, 
+            score: puntuacion 
         };
-
-        // Añade un listener para redimensionar el canvas cuando la ventana cambie de tamaño
-        window.addEventListener('resize', () => {
-            const canvas = document.getElementById('canvas'); // Asumiendo que tu canvas tiene id="canvas"
-            if (window.engineInstance && canvas) { // Usamos window.engineInstance para asegurarnos de que Godot está cargado
-                canvas.width = canvas.clientWidth;
-                canvas.height = canvas.clientHeight;
-                if (window.engineInstance.setCanvasSize) {
-                    window.engineInstance.setCanvasSize(canvas.clientWidth, canvas.clientHeight);
-                }
-            }
-        });
-
-        // Única función window.onload para inicializar todo
-        window.onload = function() {
-            // Inicialización de Godot
-            const canvas = document.getElementById('canvas'); // Asumiendo que tu canvas tiene id="canvas"
-            const GODOT_CONFIG = {
-                args: [],
-                canvas: canvas,
-                canvasResizePolicy: 1, // 1 = SCALE (Godot escala el renderizado)
-                ensureCrossOriginIsolationHeaders: true, // Esto es importante para Godot 4.x en web
-                executable: "Juego Godot/automatacelular", // Asegúrate de que esta ruta es correcta
-                experimentalVK: false,
-                fileSizes: { // Asegúrate de que estos tamaños son correctos para tus archivos
-                    "Juego Godot/automatacelular.pck": 1017119,
-                    "Juego Godot/automatacelular.wasm": 43610726
+        try {
+            const response = await fetch(highscoreUrlPost, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
                 },
-                focusCanvas: false,
-                gdextensionLibs: [],
-                width: 1152, // El ancho base de tu juego Godot
-                height: 648 // La altura base de tu juego Godot
-            };
-
-            // Guarda la instancia del motor de Godot en el objeto window para que sea accesible globalmente
-            window.engineInstance; 
-
-            new Engine(GODOT_CONFIG).startGame().then((instance) => {
-                console.log("Juego Godot iniciado y ejecutándose.");
-                window.engineInstance = instance; // Asigna la instancia a window.engineInstance
-                if (window.engineInstance && window.engineInstance.setCanvasSize) {
-                    window.engineInstance.setCanvasSize(canvas.clientWidth, canvas.clientHeight);
-                }
-            }).catch((err) => {
-                console.error("Error al iniciar el juego Godot:", err);
-                const gameContainer = document.getElementById('juego-container');
-                gameContainer.innerHTML = '<p style="color: red; text-align: center;">Error al cargar el juego. Por favor, revisa la consola para más detalles.</p>';
+                body: JSON.stringify(data)
             });
 
-            // Inicialización de los récords al cargar la página
-            obtenerYMostrarRecords();
+            if (!response.ok) {
+                throw new Error(`Error al enviar el récord: ${response.status}`);
+            }
+            const responseData = await response.json();
 
-            // Asigna los event listeners a los botones solo si existen
-            if (cargarMasButton) {
-                cargarMasButton.addEventListener('click', mostrarSiguientesRecords);
+            if (responseData.status === 'ok') {
+                console.log('Récord guardado exitosamente');
+                await obtenerYMostrarRecords(); 
+                return true; // Indica a Godot que fue exitoso
+            } else {
+                console.error('Error al guardar el récord:', responseData.message);
+                return false; // Indica a Godot que hubo un error
             }
-            if (plegarListaButton) {
-                plegarListaButton.addEventListener('click', plegarListaRecords);
+        } catch (error) {
+            console.error('Error de red o del servidor al enviar récord:', error);
+            return false; // Indica a Godot que hubo un error
+        }
+    };
+
+    // Añade un listener para redimensionar el canvas cuando la ventana cambie de tamaño
+    window.addEventListener('resize', () => {
+        const canvas = document.getElementById('canvas'); // Asumiendo que tu canvas tiene id="canvas"
+        if (window.engineInstance && canvas) { // Usamos window.engineInstance para asegurarnos de que Godot está cargado
+            canvas.width = canvas.clientWidth;
+            canvas.height = canvas.clientHeight;
+            if (window.engineInstance.setCanvasSize) {
+                window.engineInstance.setCanvasSize(canvas.clientWidth, canvas.clientHeight);
             }
+        }
+    });
+
+    // Única función window.onload para inicializar todo
+    window.onload = function() {
+        // Inicialización de Godot
+        const canvas = document.getElementById('canvas'); // Asumiendo que tu canvas tiene id="canvas"
+        const GODOT_CONFIG = {
+            args: [],
+            canvas: canvas,
+            canvasResizePolicy: 1, // 1 = SCALE (Godot escala el renderizado)
+            ensureCrossOriginIsolationHeaders: true, // Esto es importante para Godot 4.x en web
+            executable: "Juego Godot/automatacelular", // Asegúrate de que esta ruta es correcta
+            experimentalVK: false,
+            fileSizes: { // Asegúrate de que estos tamaños son correctos para tus archivos
+                "Juego Godot/automatacelular.pck": 1017119,
+                "Juego Godot/automatacelular.wasm": 43610726
+            },
+            focusCanvas: false,
+            gdextensionLibs: [],
+            width: 1152, // El ancho base de tu juego Godot
+            height: 648 // La altura base de tu juego Godot
         };
-        // FUNCIONES JAVASCRIPT PARA EL CAMPO DE TEXTO DE MÓVILES (INICIO)
 
-        // Función para mostrar el campo de texto HTML
-        window.showMobileInput = function() {
-            const mobileInput = document.getElementById('mobileNameInput'); // Busca el campo por su ID
-            if (mobileInput) { // Si lo encuentra...
-                mobileInput.value = ''; // Limpia cualquier texto anterior
-                mobileInput.style.display = 'block'; // Lo hace visible
-                mobileInput.focus(); // Le da el foco para que el teclado virtual se abra
+        // Guarda la instancia del motor de Godot en el objeto window para que sea accesible globalmente
+        window.engineInstance; 
+
+        new Engine(GODOT_CONFIG).startGame().then((instance) => {
+            console.log("Juego Godot iniciado y ejecutándose.");
+            window.engineInstance = instance; // Asigna la instancia a window.engineInstance
+            if (window.engineInstance && window.engineInstance.setCanvasSize) {
+                window.engineInstance.setCanvasSize(canvas.clientWidth, canvas.clientHeight);
             }
+        }).catch((err) => {
+            console.error("Error al iniciar el juego Godot:", err);
+            const gameContainer = document.getElementById('juego-container');
+            gameContainer.innerHTML = '<p style="color: red; text-align: center;">Error al cargar el juego. Por favor, revisa la consola para más detalles.</p>';
+        });
+
+        // Inicialización de los récords al cargar la página
+        obtenerYMostrarRecords();
+
+        // Asigna los event listeners a los botones solo si existen
+        if (cargarMasButton) {
+            cargarMasButton.addEventListener('click', mostrarSiguientesRecords);
         }
-
-        // Función para ocultar el campo de texto HTML
-        window.hideMobileInput = function() {
-            const mobileInput = document.getElementById('mobileNameInput');
-            if (mobileInput) {
-                mobileInput.style.display = 'none'; // Lo oculta
-                mobileInput.value = ''; // Limpia el texto al ocultarlo
-            }
+        if (plegarListaButton) {
+            plegarListaButton.addEventListener('click', plegarListaRecords);
         }
+    };
+    // FUNCIONES JAVASCRIPT PARA EL CAMPO DE TEXTO DE MÓVILES (INICIO)
 
-        // Función para obtener el valor del campo de texto HTML
-        window.getMobileInputValue = function() {
-            const mobileInput = document.getElementById('mobileNameInput');
-            if (mobileInput) {
-                return mobileInput.value; // Devuelve lo que el usuario ha escrito
-            }
-            return ""; // Si el campo no se encuentra, devuelve una cadena vacía para evitar errores
+    // Función para mostrar el campo de texto HTML
+    window.showMobileInput = function() {
+        const mobileInput = document.getElementById('mobileNameInput'); // Busca el campo por su ID
+        if (mobileInput) { // Si lo encuentra...
+            mobileInput.value = ''; // Limpia cualquier texto anterior
+            mobileInput.style.display = 'block'; // Lo hace visible
+            mobileInput.focus(); // Le da el foco para que el teclado virtual se abra
+            console.log("showMobileInput: Campo visible y enfocado."); // DEBUG
+        } else {
+            console.warn("showMobileInput: Elemento 'mobileNameInput' no encontrado."); // DEBUG
         }
+    }
 
-        // FUNCIONES JAVASCRIPT PARA EL CAMPO DE TEXTO DE MÓVILES (FIN)
+    // Función para ocultar el campo de texto HTML
+    window.hideMobileInput = function() {
+        const mobileInput = document.getElementById('mobileNameInput');
+        if (mobileInput) {
+            mobileInput.style.display = 'none'; // Lo oculta
+            mobileInput.value = ''; // Limpia el texto al ocultarlo
+            console.log("hideMobileInput: Campo ocultado."); // DEBUG
+        } else {
+            console.warn("hideMobileInput: Elemento 'mobileNameInput' no encontrado."); // DEBUG
+        }
+    }
 
-    </script>
+    // Función para obtener el valor del campo de texto HTML
+    window.getMobileInputValue = function() {
+        const mobileInput = document.getElementById('mobileNameInput');
+        if (mobileInput) {
+            console.log("getMobileInputValue: Valor obtenido:", mobileInput.value); // DEBUG
+            return mobileInput.value; // Devuelve lo que el usuario ha escrito
+        }
+        console.warn("getMobileInputValue: Elemento 'mobileNameInput' no encontrado, devolviendo vacío."); // DEBUG
+        return ""; // Si el campo no se encuentra, devuelve una cadena vacía para evitar errores
+    }
+
+    // FUNCIONES JAVASCRIPT PARA EL CAMPO DE TEXTO DE MÓVILES (FIN)
+
+    // --- NUEVA FUNCIÓN PARA ACTUALIZAR INFO DE DEPURACIÓN EN HTML (INICIO) ---
+    window.updateDebugInfo = function(message) {
+        const debugDiv = document.getElementById('debugInfo'); // Busca el nuevo div por su ID
+        if (debugDiv) {
+            // Reemplaza los saltos de línea escapados por saltos de línea reales en HTML
+            debugDiv.innerHTML = message.replace(/\\n/g, '<br>'); 
+            console.log("Debug Info Actualizado en HTML:", message); // Mantener un log para depuración
+        } else {
+            console.warn("updateDebugInfo: Elemento 'debugInfo' no encontrado."); // DEBUG
+        }
+    };
+    // --- NUEVA FUNCIÓN PARA ACTUALIZAR INFO DE DEPURACIÓN EN HTML (FIN) ---
+    // --- FIN DE TODO EL CÓDIGO JAVASCRIPT PERSONALIZADO UNIFICADO ---
+</script>
 </body>
 </html>
-
