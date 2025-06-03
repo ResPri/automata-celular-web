@@ -96,18 +96,60 @@
     padding: 0.8em 1em; /* Aumentamos el padding para más espacio */
     border-bottom: 1px solid #eee;
     font-size: 1.1em; /* Texto un poco más grande */
-    color: #555; /* Un color de texto un poco más suave */
+    color: #555; /* Un color de texto un poco más suave por defecto */
 }
-#tabla-records li:nth-child(odd) {
-    background-color: #f9f9f9; /* Color de fondo para filas impares (efecto cebra) */
-}
+
+/* Estilos para el primer puesto (ORO) */
 #tabla-records li:first-child {
-    font-weight: bold; /* Primer elemento en negrita (para el campeón) */
-    color: #0575ff; /* Color especial para el primer puesto */
-    background-color: #e6f2ff; /* Fondo ligeramente azulado para el primer puesto */
-    border-top-left-radius: 5px; /* Redondeamos las esquinas del primer elemento */
+    font-weight: bold; /* Poner en negrita */
+    background-color: #FFD700; /* Fondo dorado */
+    color: #333333; /* Texto oscuro para contraste */
+    border-top-left-radius: 5px; 
     border-top-right-radius: 5px;
+    box-shadow: 0 2px 5px rgba(255, 215, 0, 0.4); /* Sombra para destacar */
 }
+/* Aseguramos que los spans internos también sean del color correcto si su color por defecto no lo es */
+#tabla-records li:first-child .record-posicion,
+#tabla-records li:first-child .record-nombre,
+#tabla-records li:first-child .record-puntuacion {
+    color: #333333;
+}
+
+
+/* Estilos para el segundo puesto (PLATA) */
+#tabla-records li:nth-child(2) {
+    font-weight: bold; /* Poner en negrita */
+    background-color: #C0C0C0; /* Fondo plateado */
+    color: #333333; /* Texto oscuro para contraste */
+    box-shadow: 0 2px 5px rgba(192, 192, 192, 0.4); /* Sombra para destacar */
+}
+/* Aseguramos que los spans internos también sean del color correcto */
+#tabla-records li:nth-child(2) .record-posicion,
+#tabla-records li:nth-child(2) .record-nombre,
+#tabla-records li:nth-child(2) .record-puntuacion {
+    color: #333333;
+}
+
+/* Estilos para el tercer puesto (BRONCE) */
+#tabla-records li:nth-child(3) {
+    font-weight: bold; /* Poner en negrita */
+    background-color: #CD7F32; /* Fondo bronce */
+    color: #333333; /* Texto oscuro para contraste */
+    box-shadow: 0 2px 5px rgba(205, 127, 50, 0.4); /* Sombra para destacar */
+}
+/* Aseguramos que los spans internos también sean del color correcto */
+#tabla-records li:nth-child(3) .record-posicion,
+#tabla-records li:nth-child(3) .record-nombre,
+#tabla-records li:nth-child(3) .record-puntuacion {
+    color: #333333;
+}
+
+/* Ajuste para el efecto cebra: Aplica el cebra a impares EXCEPTO los 3 primeros */
+#tabla-records li:nth-child(odd):not(:nth-child(-n+3)) { 
+    background-color: #f9f9f9; 
+}
+
+
 #tabla-records li:last-child {
     border-bottom: none;
     border-bottom-left-radius: 5px; /* Redondeamos las esquinas del último elemento */
@@ -117,8 +159,8 @@
 /* Estilos específicos para cada columna */
 .record-posicion {
     text-align: center; /* Centra el número de posición */
-    font-weight: bold;
-    color: #333;
+    font-weight: bold; /* Ya lo tienen los de arriba, pero es un buen fallback */
+    color: inherit; /* Hereda el color del padre (li) */
 }
 
 .record-nombre {
@@ -126,12 +168,13 @@
     overflow: hidden; /* Oculta el texto si es muy largo */
     white-space: nowrap; /* Evita saltos de línea */
     text-overflow: ellipsis; /* Añade puntos suspensivos si el texto se desborda */
+    color: inherit; /* Hereda el color del padre (li) */
 }
 
 .record-puntuacion {
     text-align: right; /* Alinea la puntuación a la derecha */
     font-weight: bold;
-    color: #007bff; /* Color azul para la puntuación */
+    color: inherit; /* Hereda el color del padre (li) */
 }
 
 /* OPCIONAL: Añadir un encabezado de tabla */
@@ -159,6 +202,7 @@ Y en el CSS:
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
 }
+*/
         #cargar-mas {
             display: inline-block;
             margin: 1em 0.5em;
@@ -318,7 +362,7 @@ Y en el CSS:
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 1.12</h1>
+        <h1>Autómata Celular 1.13</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
