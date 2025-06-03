@@ -102,46 +102,46 @@
 /* Estilos para el primer puesto (ORO) */
 #tabla-records li:first-child {
     font-weight: bold; /* Poner en negrita */
-    background-color: #FFD700; /* Fondo dorado */
-    color: #333333; /* Texto oscuro para contraste */
+    background-color: #FFF8E1; /* Fondo muy suave de oro */
+    color: #D4AF37; /* Texto dorado vibrante */
     border-top-left-radius: 5px; 
     border-top-right-radius: 5px;
-    box-shadow: 0 2px 5px rgba(255, 215, 0, 0.4); /* Sombra para destacar */
+    box-shadow: 0 2px 5px rgba(212, 175, 55, 0.2); /* Sombra sutil de oro */
 }
-/* Aseguramos que los spans internos también sean del color correcto si su color por defecto no lo es */
+/* Aseguramos que los spans internos también hereden el color vibrante */
 #tabla-records li:first-child .record-posicion,
 #tabla-records li:first-child .record-nombre,
 #tabla-records li:first-child .record-puntuacion {
-    color: #333333;
+    color: #D4AF37; /* Color dorado vibrante */
 }
 
 
 /* Estilos para el segundo puesto (PLATA) */
 #tabla-records li:nth-child(2) {
     font-weight: bold; /* Poner en negrita */
-    background-color: #C0C0C0; /* Fondo plateado */
-    color: #333333; /* Texto oscuro para contraste */
-    box-shadow: 0 2px 5px rgba(192, 192, 192, 0.4); /* Sombra para destacar */
+    background-color: #ECEFF1; /* Fondo muy suave de plata */
+    color: #A0A0A0; /* Texto plateado vibrante (gris medio) */
+    box-shadow: 0 2px 5px rgba(160, 160, 160, 0.2); /* Sombra sutil de plata */
 }
-/* Aseguramos que los spans internos también sean del color correcto */
+/* Aseguramos que los spans internos también hereden el color vibrante */
 #tabla-records li:nth-child(2) .record-posicion,
 #tabla-records li:nth-child(2) .record-nombre,
 #tabla-records li:nth-child(2) .record-puntuacion {
-    color: #333333;
+    color: #A0A0A0; /* Color plateado vibrante */
 }
 
 /* Estilos para el tercer puesto (BRONCE) */
 #tabla-records li:nth-child(3) {
     font-weight: bold; /* Poner en negrita */
-    background-color: #CD7F32; /* Fondo bronce */
-    color: #333333; /* Texto oscuro para contraste */
-    box-shadow: 0 2px 5px rgba(205, 127, 50, 0.4); /* Sombra para destacar */
+    background-color: #F3E0D1; /* Fondo muy suave de bronce */
+    color: #CD7F32; /* Texto bronce vibrante */
+    box-shadow: 0 2px 5px rgba(205, 127, 50, 0.2); /* Sombra sutil de bronce */
 }
-/* Aseguramos que los spans internos también sean del color correcto */
+/* Aseguramos que los spans internos también hereden el color vibrante */
 #tabla-records li:nth-child(3) .record-posicion,
 #tabla-records li:nth-child(3) .record-nombre,
 #tabla-records li:nth-child(3) .record-puntuacion {
-    color: #333333;
+    color: #CD7F32; /* Color bronce vibrante */
 }
 
 /* Ajuste para el efecto cebra: Aplica el cebra a impares EXCEPTO los 3 primeros */
@@ -159,7 +159,7 @@
 /* Estilos específicos para cada columna */
 .record-posicion {
     text-align: center; /* Centra el número de posición */
-    font-weight: bold; /* Ya lo tienen los de arriba, pero es un buen fallback */
+    font-weight: bold; 
     color: inherit; /* Hereda el color del padre (li) */
 }
 
@@ -362,7 +362,7 @@ Y en el CSS:
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 1.13</h1>
+        <h1>Autómata Celular 1.14</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
