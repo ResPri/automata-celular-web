@@ -238,7 +238,7 @@
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 1.9</h1>
+        <h1>Autómata Celular 1.10</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
@@ -288,28 +288,6 @@
         <p>Tecnología: Godot Engine</p>
         <p><a href="contacto.html">Contacto</a> | <a href="politica-privacidad.html">Política de Privacidad</a> | <a href="terminos-uso.html">Términos de Uso</a></p>
     </footer>
-
-    <input type="text" id="mobileNameInput" placeholder="Introduce tu nombre aquí..." style="
-        position: absolute;
-        z-index: 10;
-        display: none; /* Oculto por defecto */
-        width: 250px; /* Ajusta el ancho para que sea cómodo en móvil */
-        padding: 12px;
-        font-size: 1.2em;
-        border: 3px solid #0575ff;
-        border-radius: 8px;
-        background-color: #f8f8f8; /* Color de fondo claro */
-        color: #333; /* Color de texto oscuro */
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        text-align: center;
-        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra para que destaque */
-    ">
-        <div id="debugInfo" style="margin-top: 20px; padding: 10px; background-color: #eee; border: 1px solid #ccc; text-align: center; color: black;">
-            Esperando info de depuración...
-        </div>
-        <input type="text" id="mobileNameInput" style="position: absolute; z-index: 10; ...">
 
 <script src="Juego Godot/automatacelular.js"></script>
 <script>
@@ -490,58 +468,6 @@
             plegarListaButton.addEventListener('click', plegarListaRecords);
         }
     };
-    // FUNCIONES JAVASCRIPT PARA EL CAMPO DE TEXTO DE MÓVILES (INICIO)
-
-    // Función para mostrar el campo de texto HTML
-    window.showMobileInput = function() {
-        const mobileInput = document.getElementById('mobileNameInput'); // Busca el campo por su ID
-        if (mobileInput) { // Si lo encuentra...
-            mobileInput.value = ''; // Limpia cualquier texto anterior
-            mobileInput.style.display = 'block'; // Lo hace visible
-            mobileInput.focus(); // Le da el foco para que el teclado virtual se abra
-            console.log("showMobileInput: Campo visible y enfocado."); // DEBUG
-        } else {
-            console.warn("showMobileInput: Elemento 'mobileNameInput' no encontrado."); // DEBUG
-        }
-    }
-
-    // Función para ocultar el campo de texto HTML
-    window.hideMobileInput = function() {
-        const mobileInput = document.getElementById('mobileNameInput');
-        if (mobileInput) {
-            mobileInput.style.display = 'none'; // Lo oculta
-            mobileInput.value = ''; // Limpia el texto al ocultarlo
-            console.log("hideMobileInput: Campo ocultado."); // DEBUG
-        } else {
-            console.warn("hideMobileInput: Elemento 'mobileNameInput' no encontrado."); // DEBUG
-        }
-    }
-
-    // Función para obtener el valor del campo de texto HTML
-    window.getMobileInputValue = function() {
-        const mobileInput = document.getElementById('mobileNameInput');
-        if (mobileInput) {
-            console.log("getMobileInputValue: Valor obtenido:", mobileInput.value); // DEBUG
-            return mobileInput.value; // Devuelve lo que el usuario ha escrito
-        }
-        console.warn("getMobileInputValue: Elemento 'mobileNameInput' no encontrado, devolviendo vacío."); // DEBUG
-        return ""; // Si el campo no se encuentra, devuelve una cadena vacía para evitar errores
-    }
-
-    // FUNCIONES JAVASCRIPT PARA EL CAMPO DE TEXTO DE MÓVILES (FIN)
-
-    // --- NUEVA FUNCIÓN PARA ACTUALIZAR INFO DE DEPURACIÓN EN HTML (INICIO) ---
-    window.updateDebugInfo = function(message) {
-        const debugDiv = document.getElementById('debugInfo'); // Busca el nuevo div por su ID
-        if (debugDiv) {
-            // Reemplaza los saltos de línea escapados por saltos de línea reales en HTML
-            debugDiv.innerHTML = message.replace(/\\n/g, '<br>'); 
-            console.log("Debug Info Actualizado en HTML:", message); // Mantener un log para depuración
-        } else {
-            console.warn("updateDebugInfo: Elemento 'debugInfo' no encontrado."); // DEBUG
-        }
-    };
-    // --- NUEVA FUNCIÓN PARA ACTUALIZAR INFO DE DEPURACIÓN EN HTML (FIN) ---
     // --- FIN DE TODO EL CÓDIGO JAVASCRIPT PERSONALIZADO UNIFICADO ---
 </script>
 </body>
