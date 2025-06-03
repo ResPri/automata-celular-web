@@ -1,21 +1,9 @@
 [build]
-  # Cambia 'dist' a '.' si tus archivos HTML/CSS/JS están en la raíz del repositorio.
-  # O cambia a la carpeta correcta si tu sitio genera un build en 'public', 'build', etc.
-  # Si no tienes un proceso de build para tu web estática (solo HTML/CSS/JS), elimina 'command'.
-  # Si sí tienes un comando de build (ej. 'npm run build' para React/Vue/Angular), déjalo.
   publish = "." 
 
 [functions]
   directory = "netlify/functions"
-  # Eliminamos la línea 'node_bundler = "esbuild"' para que Netlify use su bundler predeterminado (Zisi)
-  # Esto debería resolver los errores de "Cannot read file" con jsonwebtoken, jwks-rsa, etc.
 
-[build.environment]
-  NODE_VERSION = "16" # Mantener Node.js 16 para asegurar compatibilidad.
 
 [[plugins]]
 package = "@netlify/plugin-functions-install-core"
-
-[[plugins]]
-  package = "netlify-plugin-inline-functions-env"
-  [plugins.inputs]
