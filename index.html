@@ -67,80 +67,98 @@
             height: 100%; /* Ocupa el 100% de la altura de su contenedor */
         }
 
-        #tabla-records {
-            width: 100%;
-            border: 1px solid #ccc;
-            padding: 1em;
-            background-color: #fff;
-            box-sizing: border-box;
-            margin-bottom: 20px;
-            border-radius: 8px; /* Bordes redondeados para la tabla */
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra suave para levantar la tabla */
-        }
-        #tabla-records h2 {
-            text-align: center;
-            margin-bottom: 1em; /* Un poco más de espacio debajo del título */
-            color: #333; /* Color de texto más oscuro para el título */
-        }
-        #tabla-records ol {
-            padding: 0; /* Eliminamos el padding izquierdo por defecto de la lista */
-            list-style: none; /* Quitamos los números por defecto para un control manual */
-            max-width: 400px; /* Ancho máximo para la lista para que no se vea demasiado ancha en pantallas grandes */
-            margin: 0 auto; /* Centra la lista dentro de su contenedor */
-        }
-        #tabla-records li {
-            display: flex; /* Usamos flexbox para alinear contenido dentro del li */
-            justify-content: space-between; /* Distribuye el nombre a la izquierda y la puntuación a la derecha */
-            align-items: center; /* Centra verticalmente el contenido */
-            padding: 0.8em 1em; /* Aumentamos el padding para más espacio */
-            border-bottom: 1px solid #eee;
-            font-size: 1.1em; /* Texto un poco más grande */
-            color: #555; /* Un color de texto un poco más suave */
-        }
-        #tabla-records li:nth-child(odd) {
-            background-color: #f9f9f9; /* Color de fondo para filas impares (efecto cebra) */
-        }
-        #tabla-records li:first-child {
-            font-weight: bold; /* Primer elemento en negrita (para el campeón) */
-            color: #0575ff; /* Color especial para el primer puesto */
-            background-color: #e6f2ff; /* Fondo ligeramente azulado para el primer puesto */
-            border-top-left-radius: 5px; /* Redondeamos las esquinas del primer elemento */
-            border-top-right-radius: 5px;
-        }
-        #tabla-records li:last-child {
-            border-bottom: none;
-            border-bottom-left-radius: 5px; /* Redondeamos las esquinas del último elemento */
-            border-bottom-right-radius: 5px;
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 1em;
-            text-align: center;
-            width: 100%;
-            flex-shrink: 0; /* Evita que el pie de página se encoja */
-            margin-top: auto; /* Empuja el pie de página hacia abajo si hay espacio disponible */
-            font-size: 0.9em; /* Ajuste de tamaño de fuente para el footer */
-        }
-        footer p {
-            margin: 0.5em 0;
-        }
-        footer a {
-            color: #0575ff;
-            text-decoration: none;
-        }
-        footer a:hover {
-            text-decoration: underline;
-        }
-        @media (min-width: 768px) {
-            main {
-                flex-direction: column; /* Mantenemos la columna para pantallas más grandes para que el juego y la tabla estén apilados */
-                align-items: stretch;
-            }
-            #tabla-records {
-                width: 100%;
-            }
-        }
+#tabla-records {
+    width: 100%;
+    border: 1px solid #ccc;
+    padding: 1em;
+    background-color: #fff;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    border-radius: 8px; /* Bordes redondeados para la tabla */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* Sombra suave para levantar la tabla */
+}
+#tabla-records h2 {
+    text-align: center;
+    margin-bottom: 1em; /* Un poco más de espacio debajo del título */
+    color: #333; /* Color de texto más oscuro para el título */
+}
+#tabla-records ol {
+    padding: 0; /* Eliminamos el padding izquierdo por defecto de la lista */
+    list-style: none; /* Quitamos los números por defecto, ya los gestionamos en JS */
+    max-width: 500px; /* Aumenta el ancho máximo si lo necesitas para las 3 columnas */
+    margin: 0 auto; /* Centra la lista dentro de su contenedor */
+}
+#tabla-records li {
+    display: grid; /* CAMBIO CLAVE: Usamos CSS Grid para las columnas */
+    grid-template-columns: 50px 1fr 100px; /* Definimos 3 columnas: 50px para pos, 1fr para nombre, 100px para puntuación */
+    gap: 10px; /* Espacio entre las columnas */
+    align-items: center; /* Centra verticalmente el contenido de la fila */
+    padding: 0.8em 1em; /* Aumentamos el padding para más espacio */
+    border-bottom: 1px solid #eee;
+    font-size: 1.1em; /* Texto un poco más grande */
+    color: #555; /* Un color de texto un poco más suave */
+}
+#tabla-records li:nth-child(odd) {
+    background-color: #f9f9f9; /* Color de fondo para filas impares (efecto cebra) */
+}
+#tabla-records li:first-child {
+    font-weight: bold; /* Primer elemento en negrita (para el campeón) */
+    color: #0575ff; /* Color especial para el primer puesto */
+    background-color: #e6f2ff; /* Fondo ligeramente azulado para el primer puesto */
+    border-top-left-radius: 5px; /* Redondeamos las esquinas del primer elemento */
+    border-top-right-radius: 5px;
+}
+#tabla-records li:last-child {
+    border-bottom: none;
+    border-bottom-left-radius: 5px; /* Redondeamos las esquinas del último elemento */
+    border-bottom-right-radius: 5px;
+}
+
+/* Estilos específicos para cada columna */
+.record-posicion {
+    text-align: center; /* Centra el número de posición */
+    font-weight: bold;
+    color: #333;
+}
+
+.record-nombre {
+    text-align: left; /* Alinea el nombre a la izquierda */
+    overflow: hidden; /* Oculta el texto si es muy largo */
+    white-space: nowrap; /* Evita saltos de línea */
+    text-overflow: ellipsis; /* Añade puntos suspensivos si el texto se desborda */
+}
+
+.record-puntuacion {
+    text-align: right; /* Alinea la puntuación a la derecha */
+    font-weight: bold;
+    color: #007bff; /* Color azul para la puntuación */
+}
+
+/* OPCIONAL: Añadir un encabezado de tabla */
+/* Puedes añadir esto justo antes de <ol> en el HTML, o generarlo con JS si lo prefieres */
+/* Por ejemplo, en el HTML:
+<div class="tabla-encabezado">
+    <span class="record-posicion">#</span>
+    <span class="record-nombre">Nombre</span>
+    <span class="record-puntuacion">Puntos</span>
+</div>
+Y en el CSS:
+.tabla-encabezado {
+    display: grid;
+    grid-template-columns: 50px 1fr 100px;
+    gap: 10px;
+    font-weight: bold;
+    padding: 0.5em 1em;
+    border-bottom: 2px solid #ccc;
+    margin-bottom: 5px;
+    background-color: #f0f0f0;
+    color: #333;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
+}
         #cargar-mas {
             display: inline-block;
             margin: 1em 0.5em;
@@ -300,7 +318,7 @@
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 1.11</h1>
+        <h1>Autómata Celular 1.12</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
@@ -426,30 +444,56 @@
         }
     }
 
-    function mostrarSiguientesRecords() {
-        const inicio = cantidadMostrada;
-        const fin = Math.min(cantidadMostrada + cantidadPorPagina, todosLosRecords.length);
+function mostrarSiguientesRecords() {
+    const inicio = cantidadMostrada;
+    const fin = Math.min(cantidadMostrada + cantidadPorPagina, todosLosRecords.length);
 
-        if (inicio === 0) {
-             listaRecordsElement.innerHTML = ''; 
-        }
-
-        for (let i = inicio; i < fin; i++) {
-            const record = todosLosRecords[i];
-            const nuevoItem = document.createElement('li');
-            nuevoItem.textContent = `${record.name} - ${record.score}`;
-            listaRecordsElement.appendChild(nuevoItem);
-        }
-        cantidadMostrada = fin; // Actualiza la cantidad de récords mostrados
-
-        if (cargarMasButton) {
-            cargarMasButton.disabled = (cantidadMostrada >= todosLosRecords.length);
-            cargarMasButton.style.display = (cantidadMostrada < todosLosRecords.length) ? 'inline-block' : 'none';
-        }
-        if (plegarListaButton) {
-            plegarListaButton.style.display = (cantidadMostrada > cantidadPorPagina) ? 'inline-block' : 'none';
-        }
+    if (inicio === 0) {
+        listaRecordsElement.innerHTML = ''; 
     }
+
+    for (let i = inicio; i < fin; i++) {
+        const record = todosLosRecords[i];
+        const nuevoItem = document.createElement('li');
+
+        // Calculamos la posición (índice real en la lista + 1)
+        // Ya que 'i' es el índice dentro de la "página" actual, 
+        // y 'inicio' es el desplazamiento de esa página,
+        // la posición global es 'inicio + i + 1'.
+        // Pero como el loop está basado en 'i' que va de 'inicio' a 'fin-1',
+        // 'i' ya es el índice global. Entonces, la posición es simplemente 'i + 1'.
+        const posicion = i + 1; 
+
+        // Creamos los spans para cada columna
+        const spanPosicion = document.createElement('span');
+        spanPosicion.classList.add('record-posicion');
+        spanPosicion.textContent = `${posicion}.`; // Agregamos el punto para el formato
+
+        const spanNombre = document.createElement('span');
+        spanNombre.classList.add('record-nombre');
+        spanNombre.textContent = record.name;
+
+        const spanPuntuacion = document.createElement('span');
+        spanPuntuacion.classList.add('record-puntuacion');
+        spanPuntuacion.textContent = record.score;
+
+        // Agregamos los spans al elemento de la lista
+        nuevoItem.appendChild(spanPosicion);
+        nuevoItem.appendChild(spanNombre);
+        nuevoItem.appendChild(spanPuntuacion);
+
+        listaRecordsElement.appendChild(nuevoItem);
+    }
+    cantidadMostrada = fin; // Actualiza la cantidad de récords mostrados
+
+    if (cargarMasButton) {
+        cargarMasButton.disabled = (cantidadMostrada >= todosLosRecords.length);
+        cargarMasButton.style.display = (cantidadMostrada < todosLosRecords.length) ? 'inline-block' : 'none';
+    }
+    if (plegarListaButton) {
+        plegarListaButton.style.display = (cantidadMostrada > cantidadPorPagina) ? 'inline-block' : 'none';
+    }
+}
 
     function plegarListaRecords() {
         cantidadMostrada = 0; // Reinicia para mostrar desde el principio
