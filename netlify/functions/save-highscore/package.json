@@ -4,7 +4,7 @@
   "description": "Netlify function to save highscores to Firebase",
   "main": "save-highscore.js",
   "dependencies": {
-    "firebase-admin": "11.6.0",
+    "firebase-admin": "9.12.0",
     "node-forge": "0.10.0"
   }
 }
