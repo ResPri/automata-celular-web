@@ -103,7 +103,7 @@
 #tabla-records li:first-child {
     font-weight: bold; /* Poner en negrita */
     background-color: #FFF8E1; /* Fondo muy suave de oro */
-    color: #f2f921; /* Texto dorado vibrante */
+    color: #D4AF37; /* Texto dorado vibrante */
     border-top-left-radius: 5px; 
     border-top-right-radius: 5px;
     box-shadow: 0 2px 5px rgba(212, 175, 55, 0.2); /* Sombra sutil de oro */
@@ -120,7 +120,7 @@
 #tabla-records li:nth-child(2) {
     font-weight: bold; /* Poner en negrita */
     background-color: #ECEFF1; /* Fondo muy suave de plata */
-    color: #778286; /* Texto plateado vibrante (gris medio) */
+    color: #A0A0A0; /* Texto plateado vibrante (gris medio) */
     box-shadow: 0 2px 5px rgba(160, 160, 160, 0.2); /* Sombra sutil de plata */
 }
 /* Aseguramos que los spans internos también hereden el color vibrante */
@@ -134,7 +134,7 @@
 #tabla-records li:nth-child(3) {
     font-weight: bold; /* Poner en negrita */
     background-color: #F3E0D1; /* Fondo muy suave de bronce */
-    color: #e9831e; /* Texto bronce vibrante */
+    color: #CD7F32; /* Texto bronce vibrante */
     box-shadow: 0 2px 5px rgba(205, 127, 50, 0.2); /* Sombra sutil de bronce */
 }
 /* Aseguramos que los spans internos también hereden el color vibrante */
@@ -238,26 +238,14 @@ Y en el CSS:
         #plegar-lista:hover {
             background-color: #0450b3;
         }
-#introduccion-automata-celular {
-    margin-bottom: 20px;
-    padding: 1em;
-    background-color: #e9e9e9;
-    border-radius: 5px;
-    text-align: center; /* CAMBIO CLAVE: Centra todo el texto dentro del div */
-    width: 90%; /* Ajustamos el ancho a 90% */
-    max-width: 800px; /* Limitamos el ancho máximo a 800px */
-    margin-left: auto; /* Centra el div horizontalmente */
-    margin-right: auto; /* Centra el div horizontalmente */
-    box-sizing: border-box; /* Asegura que padding y border se incluyan en el width */
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-}
-
-/* El h2 dentro de esta sección ya lo tenías centrado, lo mantenemos */
-#introduccion-automata-celular h2 {
-    text-align: center; /* Centra el título dentro de este div */
-    margin-top: 0.5em; 
-    margin-bottom: 0.8em; 
-    color: #333; 
+        #introduccion-automata-celular {
+            margin-bottom: 20px;
+            padding: 1em;
+            background-color: #e9e9e9;
+            border-radius: 5px;
+            text-align: justify;
+            width: 100%;
+        }
 
         /* Estilos para el contenedor del vídeo de YouTube */
         .video-container {
@@ -374,7 +362,7 @@ Y en el CSS:
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 1.15</h1>
+        <h1>Autómata Celular 1.16</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
