@@ -1,21 +1,21 @@
 [build]
-  # Sin comandos de build globales para la instalación de dependencias.
-  # Mantener esto si no usas un comando de build global para tu sitio (por ejemplo, si es solo HTML/CSS/JS estático)
-  # Si tu sitio web principal tiene un comando de build (ej. "npm run build"), DEBES añadirlo aquí:
-  # command = "npm run build"
-  publish = "dist" # Si tu sitio genera archivos estáticos en una carpeta 'dist', si no, cambia a la carpeta correcta (ej. ".")
+  # Cambia 'dist' a '.' si tus archivos HTML/CSS/JS están en la raíz del repositorio.
+  # O cambia a la carpeta correcta si tu sitio genera un build en 'public', 'build', etc.
+  # Si no tienes un proceso de build para tu web estática (solo HTML/CSS/JS), elimina 'command'.
+  # Si sí tienes un comando de build (ej. 'npm run build' para React/Vue/Angular), déjalo.
+  publish = "." 
 
 [functions]
   directory = "netlify/functions"
-  node_bundler = "esbuild" # Nueva línea: Forzar el bundler esbuild para las funciones
+  # Eliminamos la línea 'node_bundler = "esbuild"' para que Netlify use su bundler predeterminado (Zisi)
+  # Esto debería resolver los errores de "Cannot read file" con jsonwebtoken, jwks-rsa, etc.
 
 [build.environment]
-  NODE_VERSION = "16" # Nueva línea: Forzar Node.js 16 para el entorno de build y ejecución de funciones
+  NODE_VERSION = "16" # Mantener Node.js 16 para asegurar compatibilidad.
 
 [[plugins]]
 package = "@netlify/plugin-functions-install-core"
 
-[[plugins]] # Nuevo bloque de plugin
+[[plugins]]
   package = "netlify-plugin-inline-functions-env"
   [plugins.inputs]
-    # Puedes dejar esto vacío por ahora
