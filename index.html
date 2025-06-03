@@ -238,14 +238,27 @@ Y en el CSS:
         #plegar-lista:hover {
             background-color: #0450b3;
         }
-        #introduccion-automata-celular {
-            margin-bottom: 20px;
-            padding: 1em;
-            background-color: #e9e9e9;
-            border-radius: 5px;
-            text-align: justify;
-            width: 100%;
-        }
+#introduccion-automata-celular {
+    margin-bottom: 20px;
+    padding: 1em;
+    background-color: #e9e9e9;
+    border-radius: 5px;
+    text-align: center; /* CAMBIO CLAVE: Centra todo el texto dentro del div */
+    width: 90%; /* Ajustamos el ancho a 90% */
+    max-width: 800px; /* Limitamos el ancho máximo a 800px */
+    margin-left: auto; /* Centra el div horizontalmente */
+    margin-right: auto; /* Centra el div horizontalmente */
+    box-sizing: border-box; /* Asegura que padding y border se incluyan en el width */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* El h2 dentro de esta sección ya lo tenías centrado, lo mantenemos */
+#introduccion-automata-celular h2 {
+    text-align: center; /* Centra el título dentro de este div */
+    margin-top: 0.5em; 
+    margin-bottom: 0.8em; 
+    color: #333; 
+}
 
         /* Estilos para el contenedor del vídeo de YouTube */
         .video-container {
@@ -358,11 +371,35 @@ Y en el CSS:
             visibility: hidden;
             transition: opacity 1s, visibility 1s; /* Transición suave al desaparecer */
         }
+    
+            footer {
+            background-color: #333;
+            color: white;
+            padding: 1em;
+            text-align: center;
+            width: 100%;
+            flex-shrink: 0;
+            margin-top: auto;
+            font-size: 0.9em;
+        }
+        footer p {
+            margin: 0.5em 0;
+        }
+        footer a {
+            color: #0575ff;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+    
+    
+    
     </style>
 </head>
 <body>
     <header>
-        <h1>Autómata Celular 1.16</h1>
+        <h1>Autómata Celular 1.17</h1>
     </header>
     <main>
         <div id="introduccion-automata-celular">
@@ -640,7 +677,7 @@ function mostrarSiguientesRecords() {
             plegarListaButton.addEventListener('click', plegarListaRecords);
         }
     };
-    // --- FIN DE TODO EL CÓDIGO JAVASCRIPT PERSONALIZADO UNIFICADO ---
+
 </script>
 </body>
 </html>
